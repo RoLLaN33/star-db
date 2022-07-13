@@ -17,7 +17,7 @@ state = {
 
 componentDidMount() {
     this.updatePlanet();
-    this.interval = setInterval(this.updatePlanet, 5000);
+    this.interval = setInterval(this.updatePlanet, 10000);
 }
 
 componentWillUnmount() {

@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+
+import ErrorButton from '../error-button/error-button';
 import SwapiService from '../../services/swapi-service';
-import Spinner from '../spinner/spinner';
-import ErrorIndicator from '../error-indicator/error-indicator';
 
 import './item-details.css';
-import ErrorButton from '../error-button/error-button';
+
+const Record = ({ item, field, label }) => {
+  return (
+    <li className="list-group-item">
+      <span className="term">{label}</span>
+      <span>{ item[field] }</span>
+    </li>
+  );
+};
+
+export {
+  Record
+};
 
 export default class ItemDetails extends Component {
 
@@ -12,8 +24,7 @@ export default class ItemDetails extends Component {
 
   state = {
     item: null,
-    image: null,
-    loading: true
+    image: null
   };
 
   componentDidMount() {
@@ -21,98 +32,55 @@ export default class ItemDetails extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.itemId !== prevProps.itemId) {
+    if (this.props.itemId !== prevProps.itemId || 
+          this.props.getData !== prevProps.getData ||
+            this.props.getImageUrl !== prevProps.getImageUrl) {
       this.updateItem();
     }
   }
 
-  onItemLoaded = (item) => {
-    this.setState({
-        item,
-        loading: false,
-        error: false,
-        
-    });
-};
-
-  onError = (err) => {
-    this.setState({
-        error: true,
-        loading: false
-    });
-  };
-
-  getImageUrl = (image) => {
-    this.setState({
-      image,
-      item: image
-    })
-  }
-
-  updateItem = () => {
-    const { itemId, getData } = this.props;
+  updateItem() {
+    const { itemId, getData, getImageUrl } = this.props;
     if (!itemId) {
       return;
     }
 
     getData(itemId)
-      .then(this.getImageUrl)
-      .then(this.onItemLoaded)
-      .catch(this.onError);
-  };
+      .then((item) => {
+        this.setState({
+          item,
+          image: getImageUrl(item)
+        });
+      });
+  }
 
   render() {
 
-    if (!this.state.item) {
-      return <span>Select a person from a list</span>
+    const { item, image } = this.state;
+    if (!item) {
+      return <span>Select a item from a list</span>;
     }
 
-    const { item, loading, error } = this.state;
-
-    const hasData = !(loading || error);
-
-    const spinner = loading ? <Spinner /> : null;
-    const content = hasData ? <ItemView item={item} /> : null;
-    const errorMessage = error ? <ErrorIndicator /> : null;
-
+    const { name } = item;
 
     return (
-      <div>
-        { errorMessage }
-        { spinner }
-        { content }
-      </div>    
-    )
-  }
-}
+      <div className="item-details card">
+        <img className="item-image"
+          src={image}
+          alt="item"/>
 
-const ItemView = ({ item }) => {
-
-  const { image, name, gender, birthYear, eyeColor } = item;
-
-  return (
-    <div className="person-details card">
-      <img className="person-image"
-        src={image} alt='character'/>
-
-      <div className="card-body">
-        <h4>{name}</h4>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item">
-            <span className="term">Gender</span>
-            <span>{gender}</span>
-          </li>
-          <li className="list-group-item">
-            <span className="term">Birth Year</span>
-            <span>{birthYear}</span>
-          </li>
-          <li className="list-group-item">
-            <span className="term">Eye Color</span>
-            <span>{eyeColor}</span>
-          </li>
-        </ul>
-        <ErrorButton/>
+        <div className="card-body">
+          <h4>{name}</h4>
+          <ul className="list-group list-group-flush">
+            {
+              React.Children.map(this.props.children, (child) => {
+                return React.cloneElement(child, { item });
+              })
+            }
+          </ul>
+          <ErrorButton />
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 }
