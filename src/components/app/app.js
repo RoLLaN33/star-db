@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import SwapiService from '../../services/swapi-service';
 import DummySwapiService from '../../services/dummy-swapi-service';
 import ErrorBoundry from '../error-boundry/error-boundry';
+
 
 import { PeoplePage, PlanetPage, StarshipPage } from '../pages';
 
@@ -34,19 +36,24 @@ export default class App extends Component {
   render() {
 
     return (
+      <Router>
       <ErrorBoundry>
-        <SwapiServiceProvider value={this.state.swapiService}>
-        <div className='stardb-app'>
-          <Header onServiceChange={this.onServiceChange}/>
-        
-        <RandomPlanet/>
-        <PeoplePage/>
-        <PlanetPage/>
-        <StarshipPage/>
+          <SwapiServiceProvider value={this.state.swapiService}>
+          <div className='stardb-app'>
+            <Header onServiceChange={this.onServiceChange}/>
+          
+          <RandomPlanet updateInterval={10000}/>
 
-        </div>
-        </SwapiServiceProvider>
+            <Routes>
+              <Route path='/characters' element={<PeoplePage />} />
+              <Route path='/planets' element={<PlanetPage />} />          
+              <Route path='/starships' element={<StarshipPage />} />  
+            </Routes>     
+
+          </div>
+          </SwapiServiceProvider>
       </ErrorBoundry>
+      </Router>
     );
   }
 }
