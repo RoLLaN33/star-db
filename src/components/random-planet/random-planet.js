@@ -86,7 +86,9 @@ const PlanetView = ({ planet }) => {
     return (
         <>
             <img className="planet-image"
-                 src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`} alt='planet-img'/>
+                src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+                onError={(e)=>{e.target.onerror = null; e.target.src="https://starwars-visualguide.com/assets/img/big-placeholder.jpg"}}
+                alt='planet-img'/>
             <div>
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">

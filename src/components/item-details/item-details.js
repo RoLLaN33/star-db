@@ -67,6 +67,7 @@ export default class ItemDetails extends Component {
       <div className="item-details card">
         <img className="item-image"
           src={image}
+          onError={(e)=>{e.target.onerror = null; e.target.src="https://starwars-visualguide.com/assets/img/big-placeholder.jpg"}}
           alt="item"/>
 
         <div className="card-body">

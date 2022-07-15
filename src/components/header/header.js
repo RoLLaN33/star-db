@@ -1,31 +1,42 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './header.css';
 
-const Header = ({ onServiceChange }) => {
+const Header = (onServiceChange) => {
+
+  const style = ({isActive}) => ({
+    color: isActive ? 'white' : ''
+  })
+
   return (
     <div className="header d-flex">
       <h3>
-        <Link to='/'>
+        <NavLink to='/'>
           Star DB
-        </Link>
+        </NavLink>
       </h3>
       <ul className="d-flex">
         <li>
-          <Link to='/characters'>
+          <NavLink 
+            to='/characters'
+            style={style}>
             People
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to='/planets'>
+          <NavLink 
+            to='/planets'
+            style={style}>
             Planets
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to='/starships'>
+          <NavLink 
+            to='/starships'
+            style={style}>
             Starships
-          </Link>
+          </NavLink>
         </li>
       </ul>
       <button 
@@ -35,6 +46,6 @@ const Header = ({ onServiceChange }) => {
       </button>
     </div>
   );
-};
+}
 
 export default Header;

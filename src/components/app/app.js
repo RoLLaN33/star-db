@@ -40,7 +40,8 @@ export default class App extends Component {
       <ErrorBoundry>
           <SwapiServiceProvider value={this.state.swapiService}>
           <div className='stardb-app'>
-            <Header onServiceChange={this.onServiceChange}/>
+            <Header onServiceChange={this.onServiceChange}
+            style={this.props.lol}/>
           
           <RandomPlanet updateInterval={10000}/>
 
