@@ -19,23 +19,36 @@ const Header = (onServiceChange) => {
       <ul className="d-flex">
         <li>
           <NavLink 
-            to='/characters'
+            to='/people/'
             style={style}>
             People
           </NavLink>
         </li>
         <li>
           <NavLink 
-            to='/planets'
+            to='/planets/'
             style={style}>
             Planets
           </NavLink>
         </li>
         <li>
           <NavLink 
-            to='/starships'
+            to='/starships/'
             style={style}>
             Starships
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to='/login'
+            style={style}>
+            Login
+          </NavLink>
+        </li>        <li>
+          <NavLink 
+            to='/secret'
+            style={style}>
+            Secret
           </NavLink>
         </li>
       </ul>
